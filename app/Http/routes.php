@@ -23,8 +23,11 @@ Route::post('login', 'Auth\AuthController@postLogin')->name('login.post');
 Route::get('logout', 'Auth\AuthController@getLogout')->name('logout.get');
 
 Route::group(['middleware' => 'auth'], function () {
+    
+     
     Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
     Route::group(['prefix' => 'user/{id}'], function () {
+        
         Route::post('follow', 'UserFollowController@store')->name('user.follow');
         Route::delete('unfollow', 'UserFollowController@destroy')->name('user.unfollow');
         Route::get('followings', 'UsersController@followings')->name('users.followings');
@@ -32,11 +35,11 @@ Route::group(['middleware' => 'auth'], function () {
         
         Route::post('favorite', 'MicropostFavoriteController@store')->name('user.favorite');
         Route::delete('unfavorite', 'MicropostFavoriteController@destroy')->name('user.unfavorite');
+        
+        Route::get('favoritings', 'UsersController@favoritings')->name('users.favoritings');
+        
     });
      Route::resource('microposts', 'MicropostsController', ['only' => ['store', 'destroy']]);
-     Route::group(['prefix' => 'microposts/{id}'], function () { 
-
-        Route::get('favoritings', 'UsersController@favoritings')->name('users.favoritings');
-        });
+     
     
 });
